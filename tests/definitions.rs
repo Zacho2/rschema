@@ -61,11 +61,13 @@ struct NamedDefsStruct {
 struct Definitions {
     prop_struct: Struct,
 
-    prop_enum: Enum,
+    // prop_enum: Enum, <- If this enum is not defined in any structure outside the Vec<Enum> below, it's removed from the generated definitions
 
     prop_external: external_crate::Struct,
 
     prop_named_defs_struct: NamedDefsStruct,
+    
+    prop_vector_enum: Vec<Enum>,
 }
 
 #[test]
@@ -79,14 +81,17 @@ fn it_tests_definitions() -> rschema::Result<()> {
     "prop_struct": {
       "$ref": "#/$defs/definitions::Struct"
     },
-    "prop_enum": {
-      "$ref": "#/$defs/definitions::Enum"
-    },
     "prop_external": {
       "$ref": "#/$defs/definitions::external_crate::Struct"
     },
     "prop_named_defs_struct": {
       "$ref": "#/$defs/CustomDefinition"
+    },
+    "prop_vec_enum": {
+      "type": "array",
+      "items": [
+        "$ref": "#/$defs/definitions::Enum"
+      ]
     }
   },
   "additionalProperties": false,
